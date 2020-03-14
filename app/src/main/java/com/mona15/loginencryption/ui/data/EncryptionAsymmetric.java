@@ -11,7 +11,7 @@ import java.security.PublicKey;
 
 /**
  * Permite realizar la encriptación por medio del tipo RSA
- * este tipo de cominucación encritada es asimétrica
+ * este tipo de comunicación encritada es asimétrica
  */
 public class EncryptionAsymmetric {
 
