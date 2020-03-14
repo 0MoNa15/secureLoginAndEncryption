@@ -10,7 +10,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 public class Encryption {
-    
+
     private KeyPairGenerator kpg;
     private KeyPair kp;
     private PublicKey publicKey;
