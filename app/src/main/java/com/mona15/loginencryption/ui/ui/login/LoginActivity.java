@@ -1,6 +1,7 @@
 package com.mona15.loginencryption.ui.ui.login;
 
 import android.app.Activity;
+import android.widget.*;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -12,11 +13,6 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mona15.loginencryption.R;
 import com.mona15.loginencryption.ui.data.EncryptionAsymmetric;
@@ -28,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     EncryptionAsymmetric mEncryptionAsymmetric;
     String mUserName = "";
     String mPassword = "";
+    ScrollView mShowDataScrollView;
 
 
     @Override
@@ -55,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mUserNameEncryptedTextView = findViewById(R.id.text_view_user_encrypted);
         mPasswordncryptedTextView = findViewById(R.id.text_view_password_encrypted);
-
+        mShowDataScrollView = findViewById(R.id.scrollViewShowData);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -89,6 +86,8 @@ public class LoginActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK);
 
                 // Show data
+
+                mShowDataScrollView.setVisibility(View.VISIBLE);
                 mUserNameEncryptedTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points_encrypted), "   ", mUserName));
                 mPasswordncryptedTextView.setText(String.format("%s%s%s", getString(R.string.prompt_password_points_encrypted), "   ", mPassword));
 
