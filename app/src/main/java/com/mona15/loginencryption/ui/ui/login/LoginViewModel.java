@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import android.util.Patterns;
 
+import com.mona15.loginencryption.R;
 import com.mona15.loginencryption.ui.data.LoginRepository;
 import com.mona15.loginencryption.ui.data.Result;
 import com.mona15.loginencryption.ui.data.model.LoggedInUser;
-import com.mona15.loginencryption.ui.R;
 
 public class LoginViewModel extends ViewModel {
 
