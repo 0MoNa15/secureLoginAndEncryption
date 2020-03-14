@@ -13,7 +13,7 @@ import java.security.MessageDigest;
 
 public class EncryptionSymmetric {
 
-    private String descrypt(String datos, String password) throws Exception{
+    public String descrypt(String datos, String password) throws Exception{
         SecretKeySpec secretKey = generateKey(password);
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -23,7 +23,7 @@ public class EncryptionSymmetric {
         return datosDesencriptadosString;
     }
 
-    private String encrypt(String datos, String password) throws Exception{
+    public String encrypt(String datos, String password) throws Exception{
         SecretKeySpec secretKey = generateKey(password);
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -32,7 +32,7 @@ public class EncryptionSymmetric {
         return datosEncriptadosString;
     }
 
-    private SecretKeySpec generateKey(String password) throws Exception{
+    public SecretKeySpec generateKey(String password) throws Exception{
         MessageDigest sha = MessageDigest.getInstance("SHA-256");
         byte[] key = password.getBytes("UTF-8");
         key = sha.digest(key);

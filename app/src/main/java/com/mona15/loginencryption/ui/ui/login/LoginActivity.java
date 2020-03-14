@@ -16,15 +16,19 @@ import android.view.inputmethod.EditorInfo;
 
 import com.mona15.loginencryption.R;
 import com.mona15.loginencryption.ui.data.EncryptionAsymmetric;
+import com.mona15.loginencryption.ui.data.EncryptionSymmetric;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     TextView mUserNameOnlyTextView, mUserNameEncryptedTextView, mPasswordNameOnlyTextView, mPasswordncryptedTextView;
     EncryptionAsymmetric mEncryptionAsymmetric;
+    EncryptionSymmetric mEncryptionSymmetric;
     String mUserName = "";
     String mPassword = "";
     ScrollView mShowDataScrollView;
+
+    String PASSWORD_ENCRYPT_SIMMETRIC = "MoNa15";
 
 
     @Override
@@ -40,9 +44,11 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         mEncryptionAsymmetric = new EncryptionAsymmetric();
+        mEncryptionSymmetric = new EncryptionSymmetric();
 
         try {
             mEncryptionAsymmetric.generateKayPair();
+            mEncryptionSymmetric.generateKey(PASSWORD_ENCRYPT_SIMMETRIC);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,14 +92,13 @@ public class LoginActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK);
 
                 // Show data
-
                 mShowDataScrollView.setVisibility(View.VISIBLE);
                 mUserNameEncryptedTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points_encrypted), "   ", mUserName));
                 mPasswordncryptedTextView.setText(String.format("%s%s%s", getString(R.string.prompt_password_points_encrypted), "   ", mPassword));
 
                 try {
                     mUserNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points), "   ", mEncryptionAsymmetric.descrypt(mUserName)));
-                    mPasswordNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_password_points), "   ", mPassword));
+                    mPasswordNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_password_points), "   ", mEncryptionSymmetric.descrypt(mPassword, PASSWORD_ENCRYPT_SIMMETRIC)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -144,16 +149,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     mUserName = mEncryptionAsymmetric.encrypt(usernameEditText.getText().toString());
-                    mPassword = passwordEditText.getText().toString();
+                    mPassword = mEncryptionSymmetric.encrypt(passwordEditText.getText().toString(), PASSWORD_ENCRYPT_SIMMETRIC);
 
                     loginViewModel.login(mUserName, mPassword);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                /*loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());*/
             }
         });
     }
