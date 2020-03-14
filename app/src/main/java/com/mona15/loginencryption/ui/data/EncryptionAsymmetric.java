@@ -9,7 +9,11 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class Encryption {
+/**
+ * Permite realizar la encriptación por medio del tipo RSA
+ * este tipo de cominucación encritada es asimétrica
+ */
+public class EncryptionAsymmetric {
 
     private KeyPairGenerator kpg;
     private KeyPair kp;
