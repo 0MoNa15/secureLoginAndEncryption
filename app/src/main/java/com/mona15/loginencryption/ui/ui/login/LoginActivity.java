@@ -19,12 +19,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mona15.loginencryption.R;
-import com.mona15.loginencryption.ui.ui.login.LoginViewModel;
-import com.mona15.loginencryption.ui.ui.login.LoginViewModelFactory;
+import com.mona15.loginencryption.ui.data.EncryptionAsymmetric;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    TextView mUserNameOnlyTextView, mUserNameEncryptedTextView, mPasswordNameOnlyTextView, mPasswordncryptedTextView;
+    EncryptionAsymmetric mEncryptionAsymmetric;
+    String mUserName = "";
+    String mPassword = "";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,21 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+        mEncryptionAsymmetric = new EncryptionAsymmetric();
+
+        try {
+            mEncryptionAsymmetric.generateKayPair();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mUserNameOnlyTextView = findViewById(R.id.text_view_user_only);
+        mPasswordNameOnlyTextView = findViewById(R.id.text_view_password_only);
+
+        mUserNameEncryptedTextView = findViewById(R.id.text_view_user_encrypted);
+        mPasswordncryptedTextView = findViewById(R.id.text_view_password_encrypted);
+
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -69,8 +88,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
-                finish();
+                // Show data
+                mUserNameEncryptedTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points_encrypted), "   ", mUserName));
+                mPasswordncryptedTextView.setText(String.format("%s%s%s", getString(R.string.prompt_password_points_encrypted), "   ", mPassword));
+
+                try {
+                    mUserNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points), "   ", mEncryptionAsymmetric.descrypt(mUserName)));
+                    mPasswordNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points), "   ", mPassword));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
         });
 
@@ -98,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+
                     loginViewModel.login(usernameEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
@@ -109,8 +140,21 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+
+                // We send the encrypted data username with ecryptionAsymmetric
+
+                try {
+                    mUserName = mEncryptionAsymmetric.encrypt(usernameEditText.getText().toString());
+                    mPassword = passwordEditText.getText().toString();
+
+                    loginViewModel.login(mUserName, mPassword);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                /*loginViewModel.login(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString());*/
             }
         });
     }

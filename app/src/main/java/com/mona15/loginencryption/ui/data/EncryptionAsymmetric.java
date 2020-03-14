@@ -28,9 +28,9 @@ public class EncryptionAsymmetric {
     private final static String CRYPTO_METHOD = "RSA";
     private final static int CRYPTO_BITS = 2048;
     private final static String OPCION_RSA= "RSA/ECB/OAEPWithSHA1AndMGF1Padding";
-    private String message = "Este mensaje es secreto, por ello va encriptado";
+    //private String message = "Este mensaje es secreto, por ello va encriptado";
 
-    private void generateKayPair() throws Exception{
+    public void generateKayPair() throws Exception{
         kpg = KeyPairGenerator.getInstance(CRYPTO_METHOD);
         kpg.initialize(CRYPTO_BITS);
         kp = kpg.generateKeyPair();
@@ -40,14 +40,14 @@ public class EncryptionAsymmetric {
         Log.d("TAG1", "private key -> " + privateKey);
     }
 
-    private String encrypt(String mensajeAEncriptar) throws Exception{
+    public String encrypt(String mensajeAEncriptar) throws Exception{
         cipher = Cipher.getInstance(OPCION_RSA);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         encrytedByte = cipher.doFinal(mensajeAEncriptar.getBytes());
         return Base64.encodeToString(encrytedByte, Base64.DEFAULT);
     }
 
-    private String descrypt(String result) throws Exception{
+    public String descrypt(String result) throws Exception{
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         descryptedByte = cipher.doFinal(Base64.decode(result, Base64.DEFAULT));
         descryptedString = new String(descryptedByte);
