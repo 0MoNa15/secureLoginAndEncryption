@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     mUserNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points), "   ", mEncryptionAsymmetric.descrypt(mUserName)));
-                    mPasswordNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_user_points), "   ", mPassword));
+                    mPasswordNameOnlyTextView.setText(String.format("%s%s%s", getString(R.string.prompt_password_points), "   ", mPassword));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
