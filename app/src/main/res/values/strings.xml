@@ -10,4 +10,13 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="prompt_user_points">User: </string>
+    <string name="prompt_password_points">Password: </string>
+    <string name="clean_text">-- Clean text --</string>
+    <string name="encrypted_text">-- Encrypted text --</string>
+
+
+    <string name="prompt_user_points_encrypted">Asymmetric user: </string>
+    <string name="prompt_password_points_encrypted">Symmetric password: </string>
+
 </resources>
